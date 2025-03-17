@@ -1,4 +1,4 @@
-package com;
+package com.yao;
 
 import com.yao.config.JavaConfig;
 import com.yao.servcie.OrderService;
