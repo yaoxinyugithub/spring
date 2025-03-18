@@ -17,6 +17,8 @@ dependencies {
     implementation(project(":spring-beans"))
     implementation(project(":spring-core"))
     implementation(project(":spring-aop"))
+    implementation(project(":spring-jdbc"))
+    implementation 'mysql:mysql-connector-java:5.1.38'
 }
 
 test {

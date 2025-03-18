@@ -9,6 +9,12 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
 
 /**
  * @author xy.yao
@@ -55,5 +61,28 @@ public class JavaConfig {
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
 		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
 		return defaultAdvisorAutoProxyCreator;
+	}
+
+	@Bean
+	public DataSource dataSource(){
+		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+		driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/self_test?useSSL=false");
+		driverManagerDataSource.setUsername("root");
+		driverManagerDataSource.setPassword("123456");
+		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		return driverManagerDataSource;
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager(){
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+		transactionManager.setDataSource(dataSource());
+		return transactionManager;
+	}
+	@Bean
+	public JdbcTemplate jdbcTemplate(){
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		jdbcTemplate.setDataSource(dataSource());
+		return jdbcTemplate;
 	}
 }
