@@ -4,6 +4,10 @@ import com.yao.advice.MyBeforeAdvice;
 import com.yao.entity.User;
 import com.yao.servcie.OrderService;
 import org.springframework.aop.framework.ProxyFactoryBean;
+import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.*;
 
 /**
@@ -26,5 +30,30 @@ public class JavaConfig {
 		proxyFactoryBean.setTarget(orderService);
 		proxyFactoryBean.addAdvice(new MyBeforeAdvice());
 		return proxyFactoryBean;
+	}
+
+	@Bean
+	public BeanNameAutoProxyCreator beanNameAutoProxyCreator(){
+		BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
+		beanNameAutoProxyCreator.setBeanNames("userSer*");
+		beanNameAutoProxyCreator.setInterceptorNames("myBeforeAdvice");
+		beanNameAutoProxyCreator.setProxyTargetClass(true);
+		return beanNameAutoProxyCreator;
+	}
+
+	@Bean
+	public DefaultPointcutAdvisor defaultPointcutAdvisor(){
+		NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
+		pointcut.addMethodName("travel");
+
+		DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
+		defaultPointcutAdvisor.setPointcut(pointcut);
+		defaultPointcutAdvisor.setAdvice(new MyBeforeAdvice());
+		return defaultPointcutAdvisor;
+	}
+	@Bean
+	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
+		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+		return defaultAdvisorAutoProxyCreator;
 	}
 }

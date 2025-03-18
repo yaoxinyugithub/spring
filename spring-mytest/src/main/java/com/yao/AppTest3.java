@@ -1,7 +1,7 @@
 package com.yao;
 
 import com.yao.config.JavaConfig;
-import com.yao.servcie.OrderService;
+import com.yao.servcie.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -14,5 +14,12 @@ public class AppTest3 {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
 		OrderService bean = context.getBean(OrderService.class);
 		bean.test();
+		System.out.println("--------------------");
+		UserService userService = context.getBean(UserService.class);
+		userService.test();
+
+		System.out.println("-------------------------");
+		TravelService travelService = context.getBean(TravelService.class);
+		travelService.travel();
 	}
 }
